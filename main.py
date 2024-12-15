@@ -77,7 +77,7 @@ export_df.to_excel('export.xlsx', index=None)
 # save file
 #netflix_condensed_df.to_excel('netflix_condensed.xlsx', index=None)
 
-# add newly created worksheets to raw file -> netflix_titles.csv
+# add newly created worksheets to raw file -> netflix_titles.xlsx
 with pd.ExcelWriter(
     "netflix_condensed.xlsx",
     mode="a",
@@ -101,6 +101,7 @@ export_df = xl.load_workbook('export.xlsx')
 fill_style = PatternFill(start_color="FE98AC", 
                          end_color="FE98AC", 
                          fill_type="solid")
+
 # sheets used for comparison purposes
 sheet1 = netflix_condensed_df['Sheet1']
 export = netflix_condensed_df['Export']
