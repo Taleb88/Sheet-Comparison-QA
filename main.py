@@ -46,7 +46,12 @@ netflix_condensed_df = pd.DataFrame(np.repeat(netflix_condensed_df.values, 2, ax
 # save netflix_condensed_df file
 netflix_condensed_df.to_excel('netflix_condensed.xlsx', index=None)
 
-# 
+# replace duplicate "EST" value with "VOD" value
+netflix_condensed_df['Media'] = np.where\
+    (np.arange(len(netflix_condensed_df)) % 2, 'EST', 'VOD')
+
+# save netflix_condensed_df file
+netflix_condensed_df.to_excel('netflix_condensed.xlsx', index=None)
 
 # create export_df that mirrors netflix_condensed_df
 export_df = pd.DataFrame()
@@ -77,6 +82,13 @@ export_df.to_excel('export.xlsx', sheet_name='Export', index=None)
 # create duplicate rows
 export_df = pd.DataFrame(np.repeat(export_df.values, 2, axis=0), 
                                     columns=export_df.columns)
+
+# save export_df file
+export_df.to_excel('export.xlsx', index=None)
+
+# replace duplicate "EST" value with "VOD" value
+export_df['Media'] = np.where\
+    (np.arange(len(export_df)) % 2, 'EST', 'VOD')
 
 # save export_df file
 export_df.to_excel('export.xlsx', index=None)
