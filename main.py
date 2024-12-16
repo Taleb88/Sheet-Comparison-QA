@@ -94,8 +94,8 @@ export_df['Media'] = np.where\
 export_df.to_excel('export.xlsx', index=None)
 
 # sort values in columns of condensed file
-netflix_condensed_df = netflix_condensed_df.sort_values(by=['Type', 'Title'])
-export_df = export_df.sort_values(by=['Type', 'Title'])
+netflix_condensed_df = netflix_condensed_df.sort_values(by=['Type', 'Title', 'Media'])
+export_df = export_df.sort_values(by=['Type', 'Title', 'Media'])
 
 # save files
 netflix_condensed_df.to_excel('netflix_condensed.xlsx', index=None)
@@ -103,12 +103,14 @@ export_df.to_excel('export.xlsx', index=None)
 
 
 # ================= #
-# intentionally replacing certain values to create mismatches
+# TEST - intentionally replacing certain values to create mismatches
 # ================= #
-netflix_condensed_df['Release Year'] = netflix_condensed_df['Release Year'].replace(1991, 1995)
+netflix_condensed_df['Release Year'] = \
+    netflix_condensed_df['Release Year'].replace(1991, 1995)
 
 # save file
 netflix_condensed_df.to_excel('netflix_condensed.xlsx', index=None)
+
 
 # add newly created worksheets to raw file -> netflix_titles.xlsx
 with pd.ExcelWriter(
