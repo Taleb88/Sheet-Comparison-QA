@@ -1,4 +1,7 @@
 import pandas as pd
+import numpy as np
+
+pd.set_option('future.no_silent_downcasting', True)
 
 # read csv file
 netflix_df = pd.read_csv('netflix_titles.csv')
@@ -13,7 +16,7 @@ netflix_xlsx_df.to_excel('netflix_titles.xlsx', index=None)
 # create condensed version of file
 netflix_condensed_df = pd.DataFrame()
 title = netflix_df.iloc[:,2]
-netflix_condensed_df['Title'] = title.copy()
+netflix_condensed_df['Title'] = title.copy() 
 type = netflix_df.iloc[:,1]
 netflix_condensed_df['Type'] = type.copy()
 director = netflix_df.iloc[:,3]
@@ -30,13 +33,22 @@ rating = netflix_df.iloc[:,8]
 netflix_condensed_df['Rating'] = rating.copy()
 duration = netflix_df.iloc[:,9]
 netflix_condensed_df['Duration'] = duration.copy()
-
+# adding new columns to export_df
+netflix_condensed_df['Media'] = ['EST'] * len(netflix_condensed_df)
 
 # save netflix_condensed_df file
 netflix_condensed_df.to_excel('netflix_condensed.xlsx', index=None)
 
-# create export_df that mirrors netflix_condensed_df
+# create duplicate rows
+netflix_condensed_df = pd.DataFrame(np.repeat(netflix_condensed_df.values, 2, axis=0), 
+                                    columns=netflix_condensed_df.columns)
 
+# save netflix_condensed_df file
+netflix_condensed_df.to_excel('netflix_condensed.xlsx', index=None)
+
+# 
+
+# create export_df that mirrors netflix_condensed_df
 export_df = pd.DataFrame()
 title = netflix_df.iloc[:,2]
 export_df['Title'] = title.copy()
@@ -56,9 +68,18 @@ rating = netflix_df.iloc[:,8]
 export_df['Rating'] = rating.copy()
 duration = netflix_df.iloc[:,9]
 export_df['Duration'] = duration.copy()
+# adding new columns to export_df
+export_df['Media'] = ['EST'] * len(export_df)
 
 # save export_df file
 export_df.to_excel('export.xlsx', sheet_name='Export', index=None)
+
+# create duplicate rows
+export_df = pd.DataFrame(np.repeat(export_df.values, 2, axis=0), 
+                                    columns=export_df.columns)
+
+# save export_df file
+export_df.to_excel('export.xlsx', index=None)
 
 # sort values in columns of condensed file
 netflix_condensed_df = netflix_condensed_df.sort_values(by=['Type', 'Title'])
@@ -72,10 +93,10 @@ export_df.to_excel('export.xlsx', index=None)
 # ================= #
 # intentionally replacing certain values to create mismatches
 # ================= #
-#netflix_condensed_df['Release Year'] = netflix_condensed_df['Release Year'].replace(1990, 1995)
+netflix_condensed_df['Release Year'] = netflix_condensed_df['Release Year'].replace(1991, 1995)
 
 # save file
-#netflix_condensed_df.to_excel('netflix_condensed.xlsx', index=None)
+netflix_condensed_df.to_excel('netflix_condensed.xlsx', index=None)
 
 # add newly created worksheets to raw file -> netflix_titles.xlsx
 with pd.ExcelWriter(
@@ -85,6 +106,7 @@ with pd.ExcelWriter(
     if_sheet_exists="replace",
 ) as writer:
     export_df.to_excel(writer, sheet_name='Export', index=None)
+
 
 #  
 # comparing values of sheets, highlighting differences
@@ -108,18 +130,19 @@ export = netflix_condensed_df['Export']
 
 for row in sheet1.iter_rows():
     for cell in row:
-        current_cell_Value = cell.value
+        current_cell_value = cell.value
         cell_location = cell.coordinate
         # if values do not match, cells get highlighted accordingly
-        if current_cell_Value != export[cell_location].value:
+        if current_cell_value != export[cell_location].value:
             cell.fill = fill_style
 
 for row in export.iter_rows():
     for cell in row:
-        current_cell_Value = cell.value
+        current_cell_value = cell.value
         cell_location = cell.coordinate
+        
         # if values do not match, cells get highlighted accordingly
-        if current_cell_Value != sheet1[cell_location].value:
+        if current_cell_value != sheet1[cell_location].value:
             cell.fill = fill_style
 
 netflix_condensed_df.save("netflix_condensed.xlsx")
