@@ -39,6 +39,18 @@ netflix_condensed_df['Media'] = ['EST'] * len(netflix_condensed_df)
 # save netflix_condensed_df file
 netflix_condensed_df.to_excel('netflix_condensed.xlsx', index=None)
 
+# convert Date Added values to DateTime format
+netflix_condensed_df['Date Added'] = pd.to_datetime(netflix_condensed_df['Date Added'], format='mixed')
+
+# save netflix_condensed_df file
+netflix_condensed_df.to_excel('netflix_condensed.xlsx', index=None)
+
+# convert Date Added values to string format
+netflix_condensed_df['Date Added'] = netflix_condensed_df['Date Added'].astype(str)
+
+# save netflix_condensed_df file
+netflix_condensed_df.to_excel('netflix_condensed.xlsx', index=None)
+
 # create duplicate rows
 netflix_condensed_df = pd.DataFrame(np.repeat(netflix_condensed_df.values, 2, axis=0), 
                                     columns=netflix_condensed_df.columns)
@@ -79,6 +91,18 @@ export_df['Media'] = ['EST'] * len(export_df)
 # save export_df file
 export_df.to_excel('export.xlsx', sheet_name='Export', index=None)
 
+# convert Date Added values to DateTime format
+export_df['Date Added'] = pd.to_datetime(export_df['Date Added'], format='mixed')
+
+# save export_df file
+export_df.to_excel('export.xlsx', index=None)
+
+# convert Date Added values to string format
+export_df['Date Added'] = export_df['Date Added'].astype(str)
+
+# save export_df file
+export_df.to_excel('export.xlsx', index=None)
+
 # create duplicate rows
 export_df = pd.DataFrame(np.repeat(export_df.values, 2, axis=0), 
                                     columns=export_df.columns)
@@ -100,6 +124,30 @@ export_df = export_df.sort_values(by=['Type', 'Title', 'Media'])
 # save files
 netflix_condensed_df.to_excel('netflix_condensed.xlsx', index=None)
 export_df.to_excel('export.xlsx', index=None)
+
+#
+#
+# TEMPORARY TEST ONLY
+#
+#
+def color(x):
+    try:
+        if x == 'NaT':
+            return ('background-color: red; '
+                    'font-weight: bold; '
+                    'color: black')
+    except:
+        print('Error - Cannot fill in background color of cells')
+
+netflix_condensed_df_styled_df = (
+    netflix_condensed_df.
+    style.
+    applymap(color)
+)
+
+netflix_condensed_df_styled_df.\
+    to_excel('netflix_condensed.xlsx',index=False)
+
 
 
 # ================= #
