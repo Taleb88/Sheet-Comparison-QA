@@ -154,7 +154,6 @@ import openpyxl as xl
 from openpyxl.styles import PatternFill
 
 netflix_condensed_df = xl.load_workbook("netflix_condensed.xlsx")
-export_df = xl.load_workbook('export.xlsx')
 
 # highlight cells of mismatched values
 fill_style = PatternFill(start_color="FE98AC", 
