@@ -125,30 +125,6 @@ export_df = export_df.sort_values(by=['Type', 'Title', 'Media'])
 netflix_condensed_df.to_excel('netflix_condensed.xlsx', index=None)
 export_df.to_excel('export.xlsx', index=None)
 
-#
-#
-# TEMPORARY TEST ONLY
-#
-#
-def color(x):
-    try:
-        if x == 'NaT':
-            return ('background-color: red; '
-                    'font-weight: bold; '
-                    'color: black')
-    except:
-        print('Error - Cannot fill in background color of cells')
-
-netflix_condensed_df_styled_df = (
-    netflix_condensed_df.
-    style.
-    applymap(color)
-)
-
-netflix_condensed_df_styled_df.\
-    to_excel('netflix_condensed.xlsx',index=False)
-
-
 
 # ================= #
 # TEST - intentionally replacing certain values to create mismatches
@@ -158,7 +134,6 @@ netflix_condensed_df['Release Year'] = \
 
 # save file
 netflix_condensed_df.to_excel('netflix_condensed.xlsx', index=None)
-
 
 # add newly created worksheets to raw file -> netflix_titles.xlsx
 with pd.ExcelWriter(
